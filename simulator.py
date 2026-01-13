@@ -3,8 +3,6 @@ from ml_model import predict_lap_time
 
 def simulate_race(laps_df, pit_lap, tyre, model):
     race_output = []
-
-    # Tyre wear rate (% per lap)
     tyre_wear_rate = {
         "Soft": 1.8,
         "Medium": 1.2,
@@ -14,15 +12,11 @@ def simulate_race(laps_df, pit_lap, tyre, model):
     tyre_life = 100
 
     for lap in range(1, 71):
-        # ML-based lap time prediction
         lap_time = predict_lap_time(model, lap, tyre)
 
-        # Tyre degradation
         tyre_life -= tyre_wear_rate[tyre]
-
-        # Pit stop logic
         if lap == pit_lap:
-            lap_time += 22  # pit stop penalty (seconds)
+            lap_time += 22  
             tyre_life = 100
 
         race_output.append({
@@ -32,7 +26,6 @@ def simulate_race(laps_df, pit_lap, tyre, model):
         })
 
     return race_output
-
 
 def estimate_position_change(total_time_diff):
     """
