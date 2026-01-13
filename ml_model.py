@@ -4,14 +4,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 
 def prepare_ml_data(laps_df):
-    # Keep only valid laps
     df = laps_df.dropna(subset=["LapTime", "Compound"]).copy()
-
-
-    # Convert lap time to seconds
     df["LapTimeSeconds"] = df["LapTime"].dt.total_seconds()
-
-    # Encode tyre compound
     compound_map = {
         "SOFT": 0,
         "MEDIUM": 1,
@@ -19,7 +13,6 @@ def prepare_ml_data(laps_df):
     }
     df["CompoundEncoded"] = df["Compound"].map(compound_map)
 
-    # Use simple features
     features = df[["LapNumber", "CompoundEncoded"]]
     target = df["LapTimeSeconds"]
 
